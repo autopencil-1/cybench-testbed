@@ -1,0 +1,9 @@
+{
+  "job_id": "scan-3965cbebf546",
+  "status": "pending",
+  "target_url": "http://web_flag:1337",
+  "endpoints_count": 3,
+  "parameters_count": 1,
+  "fast_mode": false,
+  "created_at": "2026-05-12T10:58:53.567572+00:00"
+}

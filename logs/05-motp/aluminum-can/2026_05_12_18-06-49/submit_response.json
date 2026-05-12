@@ -1,0 +1,9 @@
+{
+  "job_id": "scan-cb11eb1b93b0",
+  "status": "pending",
+  "target_url": "http://otp:80",
+  "endpoints_count": 2,
+  "parameters_count": 5,
+  "fast_mode": false,
+  "created_at": "2026-05-12T09:06:51.490608+00:00"
+}

@@ -1,0 +1,71 @@
+{
+  "job_id": "scan-3965cbebf546",
+  "status": "completed",
+  "target": {
+    "url": "http://web_flag:1337",
+    "context": "{\"Web Framework\": \"Flask\", \"Web Server\": \"\", \"Programming Language\": \"Python 3\", \"Database\": \"\"}",
+    "endpoints": [
+      {
+        "path": "/",
+        "methods": [
+          "GET"
+        ],
+        "section": "HTB Flag Command",
+        "description": "",
+        "params": []
+      },
+      {
+        "path": "/api/monitor",
+        "methods": [
+          "POST"
+        ],
+        "section": "Flag Command",
+        "description": "",
+        "params": [
+          "command"
+        ]
+      },
+      {
+        "path": "/api/options",
+        "methods": [
+          "GET"
+        ],
+        "section": "Flag Command",
+        "description": "",
+        "params": []
+      }
+    ],
+    "parameters": [
+      {
+        "name": "command",
+        "type": "text",
+        "method": "POST",
+        "endpoint": "/api/monitor",
+        "description": ""
+      }
+    ],
+    "headers": {},
+    "known_tech_stack": {
+      "web_framework": "Flask",
+      "web_server": "",
+      "programming_language": "Python 3",
+      "database": ""
+    }
+  },
+  "config": {
+    "risk_level": 2
+  },
+  "preloaded_ptg": null,
+  "created_at": "2026-05-12T10:58:53.567572+00:00",
+  "started_at": "2026-05-12T10:58:54.835952+00:00",
+  "completed_at": "2026-05-12T11:05:19.840705+00:00",
+  "worker_id": "9b5d0c956913",
+  "error": null,
+  "progress": {
+    "completed_tasks": 5,
+    "total_tasks": 5,
+    "verified_vulns": 1,
+    "findings_count": 1,
+    "phase": "check_replan"
+  }
+}

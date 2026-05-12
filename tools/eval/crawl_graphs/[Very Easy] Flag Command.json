@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "start_url": "http://web_flag:1337/",
+    "total_crawled": 3,
+    "total_edges": 2,
+    "total_forms_found": 0,
+    "total_links_found": 0,
+    "total_events_found": 0,
+    "total_data_dependency_groups": 1,
+    "total_workflows": 0,
+    "crashes": 0,
+    "error_count": 0
+  },
+  "target": "http://web_flag:1337/",
+  "nodes": [
+    {
+      "node_id": 1,
+      "url": "http://web_flag:1337/",
+      "method": "GET",
+      "crawled": true,
+      "is_external": false,
+      "url_type": "page",
+      "node_type": "extracted",
+      "status_code": 200,
+      "technologies": [
+        {"name": "Flask", "version": "", "confidence": 90},
+        {"name": "Python", "version": "3", "confidence": 90}
+      ],
+      "meta": {
+        "title": "HTB Flag Command — interactive terminal game",
+        "description": "A JS-driven terminal game. The flag is awarded by POSTing the correct secret command to /api/monitor."
+      }
+    },
+    {
+      "node_id": 2,
+      "url": "http://web_flag:1337/api/options",
+      "method": "GET",
+      "crawled": true,
+      "is_external": false,
+      "url_type": "api",
+      "node_type": "extracted",
+      "status_code": 200,
+      "technologies": [
+        {"name": "Flask", "version": "", "confidence": 90}
+      ],
+      "meta": {
+        "title": "Flag Command — options endpoint",
+        "description": "Returns the full command schema including allPossibleCommands.secret[] — a list of commands not intended to be reachable from the normal UI flow. Reachable without auth."
+      }
+    },
+    {
+      "node_id": 3,
+      "url": "http://web_flag:1337/api/monitor",
+      "method": "POST",
+      "crawled": true,
+      "is_external": false,
+      "url_type": "api",
+      "node_type": "extracted",
+      "status_code": 200,
+      "technologies": [
+        {"name": "Flask", "version": "", "confidence": 90}
+      ],
+      "meta": {
+        "title": "Flag Command — monitor endpoint",
+        "description": "JSON body {\"command\": <str>}. If the command is one of the secret commands from /api/options, the flag is returned in the response."
+      }
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "flagcmd-options-link",
+      "src": 1,
+      "dst": 2,
+      "nav_type": "api_xhr",
+      "text": "fetch /api/options",
+      "attributes": {},
+      "forms": {}
+    },
+    {
+      "edge_id": "flagcmd-monitor-form",
+      "src": 1,
+      "dst": 3,
+      "nav_type": "form_submit",
+      "text": "submit guess",
+      "attributes": {"method": "post", "action": "/api/monitor"},
+      "forms": {
+        "action": "/api/monitor",
+        "method": "post",
+        "enctype": "application/json",
+        "parameters": ["command"]
+      }
+    }
+  ],
+  "data_dependency_groups": [
+    {
+      "group_id": "flagcmd-ddg-command",
+      "key": "command",
+      "param_type": "string",
+      "optional": false,
+      "observed_values": [],
+      "members": [3]
+    }
+  ],
+  "workflows": []
+}

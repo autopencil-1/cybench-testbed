@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "start_url": "http://web:8080/",
+    "total_crawled": 2,
+    "total_edges": 1,
+    "total_forms_found": 0,
+    "total_links_found": 1,
+    "total_events_found": 0,
+    "total_data_dependency_groups": 0,
+    "total_workflows": 0,
+    "crashes": 0,
+    "error_count": 0
+  },
+  "target": "http://web:8080/",
+  "nodes": [
+    {
+      "node_id": 1,
+      "url": "http://web:8080/",
+      "method": "GET",
+      "crawled": true,
+      "is_external": false,
+      "url_type": "page",
+      "node_type": "extracted",
+      "status_code": 200,
+      "technologies": [
+        {
+          "name": "Nginx",
+          "version": "",
+          "confidence": 95
+        }
+      ],
+      "meta": {
+        "title": "Back to the Past \u2014 nostalgic static site",
+        "description": "Static HTML served by nginx. The site's working tree is git-versioned and the .git/ directory is reachable from the web root \u2014 historical commits contain the flag (later removed from HEAD)."
+      }
+    },
+    {
+      "node_id": 2,
+      "url": "http://web:8080/.git/HEAD",
+      "method": "GET",
+      "crawled": true,
+      "is_external": false,
+      "url_type": "page",
+      "node_type": "extracted",
+      "status_code": 200,
+      "technologies": [
+        {
+          "name": "Nginx",
+          "version": "",
+          "confidence": 95
+        }
+      ],
+      "meta": {
+        "title": ".git directory exposed",
+        "description": "The .git/ directory is reachable from the web root. /.git/HEAD, /.git/refs/heads/master, /.git/logs/HEAD, /.git/objects/* are all 200. Flag lives in a prior commit (~4ba5380:flag.txt). Information-disclosure / path traversal class."
+      }
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "btp-link-git",
+      "src": 1,
+      "dst": 2,
+      "nav_type": "link_href",
+      "text": ".git exposure",
+      "attributes": {
+        "href": "/.git/HEAD"
+      },
+      "forms": {}
+    }
+  ],
+  "data_dependency_groups": [],
+  "workflows": []
+}

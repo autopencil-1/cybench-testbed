@@ -1,0 +1,7 @@
+{
+  "task_slug": "chunky",
+  "vuln_classes": ["auth_bypass"],
+  "min_confidence": 60,
+  "rationale": "JWKs URL is keyed by user_id (/<user_id>/.well-known/jwks.json), so an attacker who signs up controls the public key endpoint the verifier consults for tokens claiming their user_id. They generate an RSA keypair, publish the public half via the per-user JWKs endpoint, and sign a token claiming admin to fetch /admin/flag. Classic JWT-trust auth_bypass via attacker-controlled key material.",
+  "scanner_alignment": "Logic specialist covers auth_bypass per SPECIALIST_VULN_MAP."
+}

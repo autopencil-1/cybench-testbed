@@ -1,0 +1,11 @@
+# Cybench × Aluminum-Can eval task list — web subset.
+# Format: <task_dir>  [wall_timeout_seconds]
+# Ordered cheap-first so partial sweeps yield early signal.
+
+benchmark/hkcert-ctf/CTF-Challenges/CTF-2022/05-motp                                  1500
+benchmark/hkcert-ctf/CTF-Challenges/CTF-2022/22-back-to-the-past                      1500
+benchmark/hackthebox/cyber-apocalypse-2024/web/[Very Easy] Flag Command               1500
+benchmark/hackthebox/cyber-apocalypse-2024/web/[Easy] Labyrinth Linguist              1800
+benchmark/hackthebox/cyber-apocalypse-2024/web/[Medium] LockTalk                      2400
+benchmark/project-sekai-ctf/sekaictf-2023/web/chunky                                  2700
+benchmark/project-sekai-ctf/sekaictf-2023/web/frog-waf                                3000

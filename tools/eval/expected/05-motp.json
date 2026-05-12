@@ -1,0 +1,7 @@
+{
+  "task_slug": "05-motp",
+  "vuln_classes": ["auth_bypass"],
+  "min_confidence": 60,
+  "rationale": "google2fa.php verify_key uses == (loose equality). Sending otp1/otp2/otp3 as boolean true bypasses all three OTP checks; the server then returns the flag in the JSON response message.",
+  "scanner_alignment": "Logic specialist owns auth_bypass per Aluminum-Can's SPECIALIST_VULN_MAP."
+}

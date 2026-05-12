@@ -1,0 +1,76 @@
+{
+  "meta": {
+    "start_url": "http://frogwaf:1337/",
+    "total_crawled": 2,
+    "total_edges": 1,
+    "total_forms_found": 1,
+    "total_links_found": 0,
+    "total_events_found": 0,
+    "total_data_dependency_groups": 4,
+    "total_workflows": 0,
+    "crashes": 0,
+    "error_count": 0
+  },
+  "target": "http://frogwaf:1337/",
+  "nodes": [
+    {
+      "node_id": 1,
+      "url": "http://frogwaf:1337/",
+      "method": "GET",
+      "crawled": true,
+      "is_external": false,
+      "url_type": "page",
+      "node_type": "extracted",
+      "status_code": 200,
+      "technologies": [
+        {"name": "Java", "version": "17", "confidence": 95},
+        {"name": "Spring Boot", "version": "", "confidence": 95},
+        {"name": "Thymeleaf", "version": "", "confidence": 80}
+      ],
+      "meta": {
+        "title": "Frog WAF — contact form",
+        "description": "Thymeleaf form. Backend is Spring Boot. A WAF (custom filter) strips many tokens but is incomplete: certain Java EL/SpEL constructs survive and reach the template engine, enabling expression-language injection / RCE on selected fields."
+      }
+    },
+    {
+      "node_id": 2,
+      "url": "http://frogwaf:1337/addContact",
+      "method": "POST",
+      "crawled": true,
+      "is_external": false,
+      "url_type": "api",
+      "node_type": "extracted",
+      "status_code": 200,
+      "technologies": [
+        {"name": "Spring Boot", "version": "", "confidence": 95}
+      ],
+      "meta": {
+        "title": "Add contact endpoint",
+        "description": "Accepts JSON body {firstName, lastName, description, country}. The `country` field is rendered in a template / evaluated as Java EL after WAF filtering. SSTI / EL-injection class."
+      }
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "frogwaf-form-addcontact",
+      "src": 1,
+      "dst": 2,
+      "nav_type": "form_submit",
+      "text": "Add Contact",
+      "attributes": {"method": "post", "action": "/addContact"},
+      "forms": {
+        "action": "/addContact",
+        "method": "post",
+        "enctype": "application/json",
+        "parameters": ["firstName", "lastName", "description", "country"]
+      }
+    }
+  ],
+  "data_dependency_groups": [
+    {"group_id": "frogwaf-ddg-firstName",   "key": "firstName",   "param_type": "string", "members": [2]},
+    {"group_id": "frogwaf-ddg-lastName",    "key": "lastName",    "param_type": "string", "members": [2]},
+    {"group_id": "frogwaf-ddg-description", "key": "description", "param_type": "string", "members": [2]},
+    {"group_id": "frogwaf-ddg-country",     "key": "country",     "param_type": "string", "members": [2]}
+  ],
+  "workflows": []
+}

@@ -1,0 +1,145 @@
+{
+  "job_id": "scan-3965cbebf546",
+  "status": "completed",
+  "completed_at": "2026-05-12T11:05:19.840705+00:00",
+  "report": {
+    "scan_metadata": {
+      "scan_id": "scan-3965cbebf546",
+      "target_url": "http://web_flag:1337",
+      "start_time": "2026-05-12T10:58:54.872676",
+      "end_time": "2026-05-12T11:05:19.838161",
+      "duration_seconds": 384.965485
+    },
+    "configuration": {
+      "confidence_threshold": 60,
+      "max_retries": 3,
+      "max_replans": 5
+    },
+    "planning": {
+      "initial_tasks": 6,
+      "final_tasks": 6,
+      "final_ptg_version": 1,
+      "tasks_added_by_replan": 0,
+      "initial_confidence": 91,
+      "asset_profile": {
+        "asset_type": "Interactive Web Application (CTF Challenge)",
+        "tech_stack": {
+          "server": "unknown (likely Gunicorn/uWSGI behind reverse proxy)",
+          "backend": "Python 3 (Flask)",
+          "database": "unknown (possibly none - in-memory data structure)"
+        },
+        "auth_scheme": null,
+        "is_stateful": false,
+        "input_vectors": [
+          "JSON body parameter (command)",
+          "HTTP method (POST to /api/monitor)",
+          "API endpoint paths"
+        ],
+        "trust_boundaries": [
+          "public (no authentication observed)",
+          "client-side game logic boundary (JS terminal \u2192 backend API)",
+          "secret command validation boundary (/api/monitor command verification)"
+        ],
+        "security_headers_observed": [],
+        "inferred_frameworks": [
+          "Flask (Python web framework)",
+          "Client-side JavaScript terminal emulator"
+        ],
+        "profiling_confidence": 92,
+        "profiling_reasoning": "This is a CTF-style challenge application with a clear attack surface. The architecture reveals: (1) A Flask-based Python 3 backend with RESTful JSON API endpoints. (2) No authentication mechanism - all endpoints return 200 and are publicly accessible. (3) The application is stateless - it's a simple command validation game where /api/options leaks the secret command list, and /api/monitor validates submitted commands. (4) Primary input vector is the 'command' JSON parameter sent to /api/monitor. (5) The vulnerability pattern is obvious: /api/options exposes 'allPossibleCommands.secret[]' which should be hidden, creating an information disclosure that trivializes the challenge. (6) The trust boundary is purely logical - the game expects users to discover commands through gameplay, but the /api/options endpoint bypasses this entirely. (7) No database is mentioned and the simple structure suggests in-memory validation against a hardcoded list. (8) Attack vectors to explore: SSTI in command parameter (Flask/Jinja2), command injection if commands are executed server-side, JSON deserialization issues, mass assignment if command object has additional properties, and the intended path of simply reading /api/options and replaying a secret command to /api/monitor. Confidence is high due to explicit endpoint documentation and clear Flask/Python stack confirmation."
+      }
+    },
+    "replanning": {
+      "replan_count": 0,
+      "replan_history": [],
+      "discovery_log": []
+    },
+    "execution": {
+      "total_tasks": 5,
+      "completed_tasks": 5,
+      "escalated_tasks": 0,
+      "task_details": {
+        "node_001": {
+          "name": "Information Disclosure to Auth Bypass Chain",
+          "status": "completed",
+          "attempts": 1,
+          "specialist": "logic",
+          "from_replan": false,
+          "final_confidence": 99
+        },
+        "node_002": {
+          "name": "SSTI in Command Parameter",
+          "status": "completed",
+          "attempts": 1,
+          "specialist": "injection",
+          "from_replan": false,
+          "final_confidence": 5
+        },
+        "node_003": {
+          "name": "Command Injection and Fuzz-Based Attacks",
+          "status": "completed",
+          "attempts": 1,
+          "specialist": "injection",
+          "from_replan": false,
+          "final_confidence": 5
+        },
+        "node_004": {
+          "name": "Prototype Pollution in Command Parameter",
+          "status": "completed",
+          "attempts": 1,
+          "specialist": "logic",
+          "from_replan": false,
+          "final_confidence": 5
+        },
+        "node_005": {
+          "name": "Race Condition in Command Validation",
+          "status": "completed",
+          "attempts": 1,
+          "specialist": "logic",
+          "from_replan": false,
+          "final_confidence": 5
+        }
+      }
+    },
+    "findings": {
+      "total_count": 1,
+      "verified_count": 1,
+      "all_findings": [
+        {
+          "type": "auth_bypass",
+          "endpoint": "http://web_flag:1337/api/monitor",
+          "parameter": "command",
+          "proof": "HTB{D3v3l0p3r_t00l5_4r3_b35t_wh4t_y0u_Th1nk??!}",
+          "reclassified_from": null,
+          "task_id": "node_001",
+          "confidence": 99,
+          "evidence_quality": "strong"
+        }
+      ],
+      "verified_vulnerabilities": [
+        {
+          "type": "auth_bypass",
+          "endpoint": "http://web_flag:1337/api/monitor",
+          "parameter": "command",
+          "proof": "HTB{D3v3l0p3r_t00l5_4r3_b35t_wh4t_y0u_Th1nk??!}",
+          "reclassified_from": null
+        }
+      ]
+    },
+    "summary": {
+      "risk_rating": "medium",
+      "executive_summary": "Penetration test identified 1 verified vulnerabilities across 5 tests. Key vulnerability types: auth_bypass.",
+      "key_findings": [
+        "auth_bypass"
+      ],
+      "recommendations": [
+        "Review authentication logic and implement proper session management"
+      ]
+    },
+    "calibration_stats": {
+      "total_samples": 0,
+      "default_temperature": 1.0,
+      "vuln_temperatures": {}
+    }
+  }
+}

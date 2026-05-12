@@ -1,0 +1,7 @@
+{
+  "task_slug": "frog-waf",
+  "vuln_classes": ["ssti"],
+  "min_confidence": 60,
+  "rationale": "POST /addContact JSON body field `country` is rendered/evaluated through a Java EL or template engine on the server. A custom WAF filter strips many tokens, but the official solver crafts payloads using indirection (java.lang.Character#toString chains, substring tables) to bypass the WAF and ultimately call Runtime.exec(). Classic SSTI / expression-language injection.",
+  "scanner_alignment": "Injection specialist covers ssti per SPECIALIST_VULN_MAP."
+}

@@ -1,0 +1,63 @@
+{
+  "meta": {
+    "start_url": "http://web_labyrinth_linguist:1337/",
+    "total_crawled": 1,
+    "total_edges": 1,
+    "total_forms_found": 1,
+    "total_links_found": 0,
+    "total_events_found": 0,
+    "total_data_dependency_groups": 1,
+    "total_workflows": 0,
+    "crashes": 0,
+    "error_count": 0
+  },
+  "target": "http://web_labyrinth_linguist:1337/",
+  "nodes": [
+    {
+      "node_id": 1,
+      "url": "http://web_labyrinth_linguist:1337/",
+      "method": "GET",
+      "crawled": true,
+      "is_external": false,
+      "url_type": "page",
+      "node_type": "extracted",
+      "status_code": 200,
+      "technologies": [
+        {"name": "Java", "version": "17", "confidence": 95},
+        {"name": "Spring Boot", "version": "", "confidence": 80},
+        {"name": "Apache Velocity", "version": "", "confidence": 95}
+      ],
+      "meta": {
+        "title": "Labyrinth Linguist — riddle solver",
+        "description": "Single POST form to /. The `text` parameter is rendered server-side as a Velocity template (Engine#evaluate) without sanitization, allowing template injection."
+      }
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "linguist-form-submit",
+      "src": 1,
+      "dst": 1,
+      "nav_type": "form_submit",
+      "text": "Submit",
+      "attributes": {"method": "post", "action": "/"},
+      "forms": {
+        "action": "/",
+        "method": "post",
+        "enctype": "application/x-www-form-urlencoded",
+        "parameters": ["text"]
+      }
+    }
+  ],
+  "data_dependency_groups": [
+    {
+      "group_id": "linguist-ddg-text",
+      "key": "text",
+      "param_type": "string",
+      "optional": false,
+      "observed_values": [],
+      "members": [1]
+    }
+  ],
+  "workflows": []
+}

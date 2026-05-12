@@ -1,0 +1,205 @@
+{
+  "job_id": "scan-92cc37cac43b",
+  "status": "completed",
+  "completed_at": "2026-05-12T11:13:48.175274+00:00",
+  "report": {
+    "scan_metadata": {
+      "scan_id": "scan-92cc37cac43b",
+      "target_url": "http://web_labyrinth_linguist:1337",
+      "start_time": "2026-05-12T11:06:39.909872",
+      "end_time": "2026-05-12T11:13:48.172107",
+      "duration_seconds": 428.262235
+    },
+    "configuration": {
+      "confidence_threshold": 60,
+      "max_retries": 3,
+      "max_replans": 5
+    },
+    "planning": {
+      "initial_tasks": 6,
+      "final_tasks": 6,
+      "final_ptg_version": 1,
+      "tasks_added_by_replan": 0,
+      "initial_confidence": 97,
+      "asset_profile": {
+        "asset_type": "Web Application - Template Processing Service",
+        "tech_stack": {
+          "server": "Embedded Tomcat (Spring Boot default)",
+          "backend": "Java 17",
+          "database": "unknown"
+        },
+        "auth_scheme": null,
+        "is_stateful": false,
+        "input_vectors": [
+          "POST body parameter (text)",
+          "HTTP headers (standard Spring Boot processing)"
+        ],
+        "trust_boundaries": [
+          "public - no authentication observed"
+        ],
+        "security_headers_observed": [],
+        "inferred_frameworks": [
+          "Spring Boot",
+          "Apache Velocity Template Engine"
+        ],
+        "profiling_confidence": 95,
+        "profiling_reasoning": "HIGH-CONFIDENCE SSTI VULNERABILITY SURFACE IDENTIFIED. The node_meta explicitly confirms server-side template injection via Apache Velocity Engine.evaluate() without sanitization on the 'text' parameter. This is a single-endpoint application (/) accepting both GET (form display) and POST (template processing). The asset is a 'riddle solver' that processes user input through Velocity templates - a classic SSTI attack surface. Tech stack: Spring Boot on Java 17 implies embedded Tomcat servlet container. No authentication mechanism observed (public trust boundary). The application is stateless (no session cookies or auth tokens mentioned). Primary input vector is the POST 'text' parameter which flows directly into template evaluation. The vulnerability description indicates zero input sanitization, making this a critical SSTI target. Database presence unknown but likely unnecessary for this simple template processing service. No security headers documented. Attack surface is narrow but severe - single parameter with direct template injection capability."
+      }
+    },
+    "replanning": {
+      "replan_count": 0,
+      "replan_history": [],
+      "discovery_log": []
+    },
+    "execution": {
+      "total_tasks": 6,
+      "completed_tasks": 6,
+      "escalated_tasks": 0,
+      "task_details": {
+        "node_001_ssti_primary": {
+          "name": "Critical SSTI Exploitation via Apache Velocity Template Injection",
+          "status": "completed",
+          "attempts": 1,
+          "specialist": "injection",
+          "from_replan": false,
+          "final_confidence": 99
+        },
+        "node_002_injection_secondary": {
+          "name": "Secondary Injection Testing - XXE and Deserialization",
+          "status": "completed",
+          "attempts": 1,
+          "specialist": "injection",
+          "from_replan": false,
+          "final_confidence": 1
+        },
+        "node_003_cmdi_via_ssti": {
+          "name": "Command Injection via SSTI and Direct Testing",
+          "status": "completed",
+          "attempts": 1,
+          "specialist": "injection",
+          "from_replan": false,
+          "final_confidence": 99
+        },
+        "node_004_xss_fallback": {
+          "name": "Reflected XSS Testing (Fallback Vector)",
+          "status": "completed",
+          "attempts": 1,
+          "specialist": "dom",
+          "from_replan": false,
+          "final_confidence": 81
+        },
+        "node_005_lfi_speculative": {
+          "name": "Local File Inclusion via Velocity Directives",
+          "status": "completed",
+          "attempts": 1,
+          "specialist": "resource",
+          "from_replan": false,
+          "final_confidence": 94
+        },
+        "node_006_ssrf_speculative": {
+          "name": "SSRF Testing (Highly Speculative)",
+          "status": "completed",
+          "attempts": 1,
+          "specialist": "dom",
+          "from_replan": false,
+          "final_confidence": 5
+        }
+      }
+    },
+    "findings": {
+      "total_count": 4,
+      "verified_count": 4,
+      "all_findings": [
+        {
+          "type": "ssti",
+          "endpoint": "http://web_labyrinth_linguist:1337/",
+          "parameter": "text",
+          "proof": "<h2 class=\"fire\">  uid=0(root) gid=0(root) groups=0(root) </h2>",
+          "reclassified_from": null,
+          "task_id": "node_001_ssti_primary",
+          "confidence": 99,
+          "evidence_quality": "strong"
+        },
+        {
+          "type": "cmdi",
+          "endpoint": "http://web_labyrinth_linguist:1337/",
+          "parameter": "text",
+          "proof": "uid=0(root) gid=0(root) groups=0(root)",
+          "reclassified_from": null,
+          "task_id": "node_003_cmdi_via_ssti",
+          "confidence": 99,
+          "evidence_quality": "strong"
+        },
+        {
+          "type": "reflected_xss",
+          "endpoint": "http://web_labyrinth_linguist:1337/",
+          "parameter": "text",
+          "proof": "<h2 class=\"fire\"><script>alert(1)</script></h2>",
+          "reclassified_from": null,
+          "task_id": "node_004_xss_fallback",
+          "confidence": 81,
+          "evidence_quality": "strong"
+        },
+        {
+          "type": "lfi",
+          "endpoint": "http://web_labyrinth_linguist:1337/",
+          "parameter": "text",
+          "proof": "The payload '#include(\"pom.xml\")' successfully retrieved the Maven configuration file, and '#include(\".gitignore\")' retrieved the git configuration file containing '/target/'.",
+          "reclassified_from": null,
+          "task_id": "node_005_lfi_speculative",
+          "confidence": 94,
+          "evidence_quality": "strong"
+        }
+      ],
+      "verified_vulnerabilities": [
+        {
+          "type": "ssti",
+          "endpoint": "http://web_labyrinth_linguist:1337/",
+          "parameter": "text",
+          "proof": "<h2 class=\"fire\">  uid=0(root) gid=0(root) groups=0(root) </h2>",
+          "reclassified_from": null
+        },
+        {
+          "type": "cmdi",
+          "endpoint": "http://web_labyrinth_linguist:1337/",
+          "parameter": "text",
+          "proof": "uid=0(root) gid=0(root) groups=0(root)",
+          "reclassified_from": null
+        },
+        {
+          "type": "reflected_xss",
+          "endpoint": "http://web_labyrinth_linguist:1337/",
+          "parameter": "text",
+          "proof": "<h2 class=\"fire\"><script>alert(1)</script></h2>",
+          "reclassified_from": null
+        },
+        {
+          "type": "lfi",
+          "endpoint": "http://web_labyrinth_linguist:1337/",
+          "parameter": "text",
+          "proof": "The payload '#include(\"pom.xml\")' successfully retrieved the Maven configuration file, and '#include(\".gitignore\")' retrieved the git configuration file containing '/target/'.",
+          "reclassified_from": null
+        }
+      ]
+    },
+    "summary": {
+      "risk_rating": "high",
+      "executive_summary": "Penetration test identified 4 verified vulnerabilities across 6 tests. Key vulnerability types: ssti, reflected_xss, lfi, cmdi.",
+      "key_findings": [
+        "ssti",
+        "cmdi",
+        "reflected_xss",
+        "lfi"
+      ],
+      "recommendations": [
+        "Apply output encoding and Content-Security-Policy headers",
+        "Avoid shell commands; use safe APIs with input validation"
+      ]
+    },
+    "calibration_stats": {
+      "total_samples": 0,
+      "default_temperature": 1.0,
+      "vuln_temperatures": {}
+    }
+  }
+}

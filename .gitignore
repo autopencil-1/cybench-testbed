@@ -5,4 +5,11 @@
 **/venv
 **/bin
 **/.vscode
-**/logs
+
+# Cybench's own per-agent-run logs are bulky and ephemeral — ignore by default.
+# Re-include the Aluminum-Can eval subtree as evaluation evidence.
+# Note: each ancestor directory must be un-excluded for git to descend into it.
+logs/**
+!logs/*/
+!logs/*/aluminum-can/
+!logs/*/aluminum-can/**

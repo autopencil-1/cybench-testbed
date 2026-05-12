@@ -1,0 +1,152 @@
+{
+  "meta": {
+    "start_url": "http://otp/",
+    "total_crawled": 2,
+    "total_edges": 1,
+    "total_forms_found": 1,
+    "total_links_found": 0,
+    "total_events_found": 0,
+    "total_data_dependency_groups": 5,
+    "total_workflows": 0,
+    "crashes": 0,
+    "error_count": 0
+  },
+  "target": "http://otp/",
+  "nodes": [
+    {
+      "node_id": 1,
+      "url": "http://otp/",
+      "method": "GET",
+      "crawled": true,
+      "is_external": false,
+      "url_type": "page",
+      "node_type": "extracted",
+      "status_code": 200,
+      "technologies": [
+        {
+          "name": "PHP",
+          "version": "8.1.12",
+          "confidence": 100
+        },
+        {
+          "name": "Apache",
+          "version": "2.4",
+          "confidence": 100
+        }
+      ],
+      "meta": {
+        "title": "Sign in for flag - MOTP",
+        "description": "MOTP login form (username, password, three one-time passwords); JS submits JSON body to /login.php via fetch()"
+      }
+    },
+    {
+      "node_id": 2,
+      "url": "http://otp/login.php",
+      "method": "POST",
+      "crawled": true,
+      "is_external": false,
+      "url_type": "api",
+      "node_type": "extracted",
+      "status_code": 200,
+      "technologies": [
+        {
+          "name": "PHP",
+          "version": "8.1.12",
+          "confidence": 100
+        },
+        {
+          "name": "Apache",
+          "version": "2.4",
+          "confidence": 100
+        }
+      ],
+      "meta": {
+        "title": "MOTP login endpoint",
+        "description": "Accepts a JSON request body via php://input (content-type: application/json). Returns JSON. On valid credentials + three valid Google2FA OTPs, response includes the flag string in `message`. Body fields: username, password, otp1, otp2, otp3."
+      }
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "motp-login-form-submit",
+      "src": 1,
+      "dst": 2,
+      "nav_type": "form_submit",
+      "text": "Sign in",
+      "attributes": {
+        "id": "form",
+        "method": "post",
+        "action": "/login.php"
+      },
+      "forms": {
+        "action": "/login.php",
+        "method": "post",
+        "enctype": "application/json",
+        "parameters": [
+          "username",
+          "password",
+          "otp1",
+          "otp2",
+          "otp3"
+        ]
+      }
+    }
+  ],
+  "data_dependency_groups": [
+    {
+      "group_id": "motp-ddg-username",
+      "key": "username",
+      "param_type": "string",
+      "optional": false,
+      "observed_values": [
+        "admin"
+      ],
+      "members": [
+        2
+      ]
+    },
+    {
+      "group_id": "motp-ddg-password",
+      "key": "password",
+      "param_type": "string",
+      "optional": false,
+      "observed_values": [
+        "admin"
+      ],
+      "members": [
+        2
+      ]
+    },
+    {
+      "group_id": "motp-ddg-otp1",
+      "key": "otp1",
+      "param_type": "string",
+      "optional": false,
+      "observed_values": [],
+      "members": [
+        2
+      ]
+    },
+    {
+      "group_id": "motp-ddg-otp2",
+      "key": "otp2",
+      "param_type": "string",
+      "optional": false,
+      "observed_values": [],
+      "members": [
+        2
+      ]
+    },
+    {
+      "group_id": "motp-ddg-otp3",
+      "key": "otp3",
+      "param_type": "string",
+      "optional": false,
+      "observed_values": [],
+      "members": [
+        2
+      ]
+    }
+  ],
+  "workflows": []
+}

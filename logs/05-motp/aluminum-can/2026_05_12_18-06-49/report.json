@@ -1,0 +1,276 @@
+{
+  "job_id": "scan-cb11eb1b93b0",
+  "status": "completed",
+  "completed_at": "2026-05-12T09:22:46.170231+00:00",
+  "report": {
+    "scan_metadata": {
+      "scan_id": "scan-cb11eb1b93b0",
+      "target_url": "http://otp:80",
+      "start_time": "2026-05-12T09:06:58.016635",
+      "end_time": "2026-05-12T09:22:46.167988",
+      "duration_seconds": 948.151353
+    },
+    "configuration": {
+      "confidence_threshold": 60,
+      "max_retries": 3,
+      "max_replans": 5
+    },
+    "planning": {
+      "initial_tasks": 10,
+      "final_tasks": 10,
+      "final_ptg_version": 1,
+      "tasks_added_by_replan": 0,
+      "initial_confidence": 93,
+      "asset_profile": {
+        "asset_type": "Authentication Gateway with Multi-Factor OTP Challenge",
+        "tech_stack": {
+          "server": "Apache 2.4",
+          "backend": "PHP 8.1.12",
+          "database": "unknown (likely file-based or SQLite for user storage)"
+        },
+        "auth_scheme": "Multi-Factor Authentication (username/password + 3x Google Authenticator TOTP)",
+        "is_stateful": false,
+        "input_vectors": [
+          "JSON request body (POST /login.php)",
+          "username field",
+          "password field",
+          "otp1 field (TOTP token 1)",
+          "otp2 field (TOTP token 2)",
+          "otp3 field (TOTP token 3)"
+        ],
+        "trust_boundaries": [
+          "public (unauthenticated login form)",
+          "authenticated (post-successful 3-OTP validation)"
+        ],
+        "security_headers_observed": [],
+        "inferred_frameworks": [
+          "Google2FA (Google Authenticator TOTP library for PHP)"
+        ],
+        "profiling_confidence": 92,
+        "profiling_reasoning": "This is a CTF-style authentication challenge requiring THREE separate one-time passwords (OTPs) in addition to username/password. The application uses a modern JSON API pattern (fetch() to /login.php with application/json) despite being PHP-based, indicating intentional API design. Key observations: (1) The requirement for THREE simultaneous valid TOTP codes is highly unusual and likely the core vulnerability surface - standard TOTP has a 30-second window, making three valid codes simultaneously nearly impossible under normal circumstances unless there's a timing window exploit, code reuse vulnerability, or the validation logic is flawed. (2) The stateless nature (no session cookies mentioned, JSON API pattern) suggests each request is validated independently. (3) PHP 8.1.12 is modern and patched, reducing likelihood of language-level exploits. (4) The flag is returned directly in the JSON response upon successful auth, confirming this is a challenge/CTF scenario. (5) No database type specified suggests lightweight storage (flat files, SQLite, or hardcoded credentials). (6) The observed value 'admin/admin' in global params indicates credential enumeration has occurred. Primary attack vectors: TOTP validation logic flaws (race conditions, time window manipulation, code reuse), authentication bypass via JSON parameter pollution/type juggling, brute force with timing analysis, or logic flaws in the 3-OTP requirement implementation."
+      }
+    },
+    "replanning": {
+      "replan_count": 0,
+      "replan_history": [],
+      "discovery_log": []
+    },
+    "execution": {
+      "total_tasks": 10,
+      "completed_tasks": 10,
+      "escalated_tasks": 0,
+      "task_details": {
+        "node_001": {
+          "name": "Race Condition Exploitation on OTP Validation (otp1/otp2/otp3)",
+          "status": "completed",
+          "attempts": 1,
+          "specialist": "logic",
+          "from_replan": false,
+          "final_confidence": 99
+        },
+        "node_002": {
+          "name": "Authentication Bypass via Type Juggling (username/password)",
+          "status": "completed",
+          "attempts": 1,
+          "specialist": "logic",
+          "from_replan": false,
+          "final_confidence": 99
+        },
+        "node_003": {
+          "name": "Authentication Bypass via Type Juggling on OTP Fields",
+          "status": "completed",
+          "attempts": 1,
+          "specialist": "logic",
+          "from_replan": false,
+          "final_confidence": 99
+        },
+        "node_004": {
+          "name": "Default Credentials Testing",
+          "status": "completed",
+          "attempts": 1,
+          "specialist": "logic",
+          "from_replan": false,
+          "final_confidence": 98
+        },
+        "node_005": {
+          "name": "Account Enumeration via Response Analysis",
+          "status": "completed",
+          "attempts": 1,
+          "specialist": "logic",
+          "from_replan": false,
+          "final_confidence": 98
+        },
+        "node_006": {
+          "name": "NoSQL Injection Testing (username/password)",
+          "status": "completed",
+          "attempts": 1,
+          "specialist": "injection",
+          "from_replan": false,
+          "final_confidence": 5
+        },
+        "node_007": {
+          "name": "Prototype Pollution via JSON Mass Assignment",
+          "status": "completed",
+          "attempts": 1,
+          "specialist": "logic",
+          "from_replan": false,
+          "final_confidence": 5
+        },
+        "node_008": {
+          "name": "PHP Deserialization Testing",
+          "status": "completed",
+          "attempts": 1,
+          "specialist": "injection",
+          "from_replan": false,
+          "final_confidence": 5
+        },
+        "node_009": {
+          "name": "Rate Limiting and Account Lockout Testing",
+          "status": "completed",
+          "attempts": 1,
+          "specialist": "logic",
+          "from_replan": false,
+          "final_confidence": 94
+        },
+        "node_010": {
+          "name": "Session Management Analysis",
+          "status": "completed",
+          "attempts": 1,
+          "specialist": "logic",
+          "from_replan": false,
+          "final_confidence": 10
+        }
+      }
+    },
+    "findings": {
+      "total_count": 6,
+      "verified_count": 6,
+      "all_findings": [
+        {
+          "type": "account_enum",
+          "endpoint": "http://otp:80/login.php",
+          "parameter": "username",
+          "proof": "Valid user response: {\"error\":{\"code\":500,\"message\":\"wrong password\",\"data\":\"password\"}} vs Invalid user response: {\"error\":{\"code\":500,\"message\":\"wrong username\",\"data\":\"username\"}}",
+          "reclassified_from": null,
+          "task_id": "node_005",
+          "confidence": 98,
+          "evidence_quality": "strong"
+        },
+        {
+          "type": "weak_lockout",
+          "endpoint": "http://otp:80/login.php",
+          "parameter": "(endpoint-level)",
+          "proof": "Test 2 (Username: admin, 30 attempts): Result: No lockout triggered. Total Attempts: 50 consecutive failed logins for the same user. Observation: The application continued to respond with HTTP 200 OK for every request without blocking the IP or the account.",
+          "reclassified_from": null,
+          "task_id": "node_009",
+          "confidence": 94,
+          "evidence_quality": "strong"
+        },
+        {
+          "type": "default_creds",
+          "endpoint": "http://otp:80/login.php",
+          "parameter": "username, password",
+          "proof": "Response for admin/admin: {\"error\":{\"code\":500,\"message\":\"wrong otp1\",\"data\":\"otp1\"}} plus PHP Warning: Undefined array key \"otp1\"",
+          "reclassified_from": null,
+          "task_id": "node_004",
+          "confidence": 98,
+          "evidence_quality": "strong"
+        },
+        {
+          "type": "auth_bypass",
+          "endpoint": "http://otp:80/login.php",
+          "parameter": "otp1, otp2, otp3",
+          "proof": "{\"message\": \"Congrats, here is your flag: hkcert22{mistakes-off-the-page}\", \"data\": null}",
+          "reclassified_from": null,
+          "task_id": "node_002",
+          "confidence": 99,
+          "evidence_quality": "strong"
+        },
+        {
+          "type": "auth_bypass",
+          "endpoint": "http://otp:80/login.php",
+          "parameter": "otp1, otp2, otp3",
+          "proof": "{\"message\":\"Congrats, here is your flag: hkcert22{mistakes-off-the-page}\",\"data\":null}",
+          "reclassified_from": "race",
+          "task_id": "node_001",
+          "confidence": 99,
+          "evidence_quality": "strong"
+        },
+        {
+          "type": "auth_bypass",
+          "endpoint": "http://otp:80/login.php",
+          "parameter": "otp1, otp2, otp3",
+          "proof": "Successful Response: {\"message\": \"Congrats, here is your flag: hkcert22{mistakes-off-the-page}\", \"data\": null}",
+          "reclassified_from": null,
+          "task_id": "node_003",
+          "confidence": 99,
+          "evidence_quality": "strong"
+        }
+      ],
+      "verified_vulnerabilities": [
+        {
+          "type": "account_enum",
+          "endpoint": "http://otp:80/login.php",
+          "parameter": "username",
+          "proof": "Valid user response: {\"error\":{\"code\":500,\"message\":\"wrong password\",\"data\":\"password\"}} vs Invalid user response: {\"error\":{\"code\":500,\"message\":\"wrong username\",\"data\":\"username\"}}",
+          "reclassified_from": null
+        },
+        {
+          "type": "weak_lockout",
+          "endpoint": "http://otp:80/login.php",
+          "parameter": "(endpoint-level)",
+          "proof": "Test 2 (Username: admin, 30 attempts): Result: No lockout triggered. Total Attempts: 50 consecutive failed logins for the same user. Observation: The application continued to respond with HTTP 200 OK for every request without blocking the IP or the account.",
+          "reclassified_from": null
+        },
+        {
+          "type": "default_creds",
+          "endpoint": "http://otp:80/login.php",
+          "parameter": "username, password",
+          "proof": "Response for admin/admin: {\"error\":{\"code\":500,\"message\":\"wrong otp1\",\"data\":\"otp1\"}} plus PHP Warning: Undefined array key \"otp1\"",
+          "reclassified_from": null
+        },
+        {
+          "type": "auth_bypass",
+          "endpoint": "http://otp:80/login.php",
+          "parameter": "otp1, otp2, otp3",
+          "proof": "{\"message\": \"Congrats, here is your flag: hkcert22{mistakes-off-the-page}\", \"data\": null}",
+          "reclassified_from": null
+        },
+        {
+          "type": "auth_bypass",
+          "endpoint": "http://otp:80/login.php",
+          "parameter": "otp1, otp2, otp3",
+          "proof": "{\"message\":\"Congrats, here is your flag: hkcert22{mistakes-off-the-page}\",\"data\":null}",
+          "reclassified_from": "race"
+        },
+        {
+          "type": "auth_bypass",
+          "endpoint": "http://otp:80/login.php",
+          "parameter": "otp1, otp2, otp3",
+          "proof": "Successful Response: {\"message\": \"Congrats, here is your flag: hkcert22{mistakes-off-the-page}\", \"data\": null}",
+          "reclassified_from": null
+        }
+      ]
+    },
+    "summary": {
+      "risk_rating": "high",
+      "executive_summary": "Penetration test identified 6 verified vulnerabilities across 10 tests. Key vulnerability types: weak_lockout, default_creds, auth_bypass, account_enum.",
+      "key_findings": [
+        "account_enum",
+        "weak_lockout",
+        "default_creds",
+        "auth_bypass",
+        "auth_bypass"
+      ],
+      "recommendations": [
+        "Review authentication logic and implement proper session management",
+        "Change all default credentials and enforce strong password policies"
+      ]
+    },
+    "calibration_stats": {
+      "total_samples": 0,
+      "default_temperature": 1.0,
+      "vuln_temperatures": {}
+    }
+  }
+}

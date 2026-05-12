@@ -1,0 +1,132 @@
+{
+  "meta": {
+    "start_url": "http://locktalk:1337/",
+    "total_crawled": 4,
+    "total_edges": 3,
+    "total_forms_found": 0,
+    "total_links_found": 2,
+    "total_events_found": 0,
+    "total_data_dependency_groups": 1,
+    "total_workflows": 1,
+    "crashes": 0,
+    "error_count": 0
+  },
+  "target": "http://locktalk:1337/",
+  "nodes": [
+    {
+      "node_id": 1,
+      "url": "http://locktalk:1337/",
+      "method": "GET",
+      "crawled": true,
+      "is_external": false,
+      "url_type": "page",
+      "node_type": "extracted",
+      "status_code": 200,
+      "technologies": [
+        {"name": "HAProxy", "version": "", "confidence": 90},
+        {"name": "Flask", "version": "", "confidence": 90},
+        {"name": "Python", "version": "3", "confidence": 90}
+      ],
+      "meta": {
+        "title": "LockTalk — chat client",
+        "description": "Front-end chat UI. HAProxy fronts a Flask backend. HAProxy applies an ACL deny on path_beg /api/v1/get_ticket; the rule is matched literally and can be bypassed using the # fragment in the request line."
+      }
+    },
+    {
+      "node_id": 2,
+      "url": "http://locktalk:1337/api/v1/get_ticket",
+      "method": "GET",
+      "crawled": true,
+      "is_external": false,
+      "url_type": "api",
+      "node_type": "extracted",
+      "status_code": 403,
+      "technologies": [
+        {"name": "Flask", "version": "", "confidence": 90}
+      ],
+      "meta": {
+        "title": "LockTalk — issue auth ticket (JWT)",
+        "description": "Issues a JWT containing claim `role`. HAProxy denies this path by default; the request must reach the backend. Once obtained, the JWT signature is verifiable but the role claim can be tampered (header confusion or algorithm switch) to escalate to administrator."
+      }
+    },
+    {
+      "node_id": 3,
+      "url": "http://locktalk:1337/api/v1/flag",
+      "method": "GET",
+      "crawled": true,
+      "is_external": false,
+      "url_type": "api",
+      "node_type": "extracted",
+      "status_code": 401,
+      "technologies": [
+        {"name": "Flask", "version": "", "confidence": 90}
+      ],
+      "meta": {
+        "title": "LockTalk — flag endpoint",
+        "description": "Requires Authorization: Bearer <JWT>. Backend grants only if `role == administrator`."
+      }
+    },
+    {
+      "node_id": 4,
+      "url": "http://locktalk:1337/api/v1/chat",
+      "method": "GET",
+      "crawled": true,
+      "is_external": false,
+      "url_type": "api",
+      "node_type": "extracted",
+      "status_code": 200,
+      "technologies": [
+        {"name": "Flask", "version": "", "confidence": 90}
+      ],
+      "meta": {
+        "title": "LockTalk — chat retrieve",
+        "description": "Retrieve chat by ID. Used by the front-end JS at /api/v1/chat/<chatId>."
+      }
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "locktalk-link-getticket",
+      "src": 1,
+      "dst": 2,
+      "nav_type": "api_xhr",
+      "text": "obtain ticket",
+      "attributes": {},
+      "forms": {}
+    },
+    {
+      "edge_id": "locktalk-link-flag",
+      "src": 1,
+      "dst": 3,
+      "nav_type": "api_xhr",
+      "text": "fetch flag",
+      "attributes": {},
+      "forms": {}
+    },
+    {
+      "edge_id": "locktalk-link-chat",
+      "src": 1,
+      "dst": 4,
+      "nav_type": "api_xhr",
+      "text": "fetch chat",
+      "attributes": {},
+      "forms": {}
+    }
+  ],
+  "data_dependency_groups": [
+    {
+      "group_id": "locktalk-ddg-authz",
+      "key": "Authorization",
+      "param_type": "string",
+      "optional": true,
+      "observed_values": ["Bearer <jwt>"],
+      "members": [3, 4]
+    }
+  ],
+  "workflows": [
+    {
+      "workflow_id": "locktalk-wf-auth-then-flag",
+      "path_nodes": [1, 2, 3]
+    }
+  ]
+}

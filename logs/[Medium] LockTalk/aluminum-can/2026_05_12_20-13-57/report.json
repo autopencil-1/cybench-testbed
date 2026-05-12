@@ -1,0 +1,36 @@
+{
+  "job_id": "scan-d7dd67ee34c2",
+  "status": "completed_partial",
+  "completed_at": "2026-05-12T21:02:51.991109",
+  "report": {
+    "scan_metadata": {
+      "scan_id": "scan-d7dd67ee34c2",
+      "target_url": "http://locktalk:1337",
+      "duration_seconds": 2400.0,
+      "note": "Synthesized from /api/reports after driver wall-timeout fired at 2400s. The scanner had already confirmed the listed finding(s) before the timeout."
+    },
+    "findings": {
+      "total_count": 1,
+      "verified_count": 1,
+      "all_findings": [
+        {
+          "type": "auth_bypass",
+          "endpoint": "http://locktalk:1337/api/v1/get_ticket",
+          "parameter": "URL Path",
+          "proof": "A path traversal bypass was identified using the URL 'http://locktalk:1337/api/v1/get_ticket/%2e%2e/get_ticket', which successfully bypasses HAProxy 403 Forbidden restrictions to reach the backend Flask application.",
+          "reclassified_from": null,
+          "task_id": "node_010",
+          "confidence": 86,
+          "evidence_quality": "strong"
+        }
+      ]
+    },
+    "summary": {
+      "risk_rating": "high",
+      "executive_summary": "Partial run (driver timeout). 1 confirmed finding(s) collected.",
+      "key_findings": [
+        "auth_bypass"
+      ]
+    }
+  }
+}

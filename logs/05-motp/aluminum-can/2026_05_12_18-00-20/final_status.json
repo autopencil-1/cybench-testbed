@@ -1,0 +1,87 @@
+{
+  "job_id": "scan-f914636de261",
+  "status": "failed",
+  "target": {
+    "url": "http://otp:80",
+    "context": "{\"Web Framework\": \"\", \"Web Server\": \"Apache 2.4\", \"Programming Language\": \"PHP 8.1.12\", \"Database\": \"\"}",
+    "endpoints": [
+      {
+        "path": "/",
+        "methods": [
+          "GET"
+        ],
+        "section": "Sign in for flag",
+        "description": "",
+        "params": []
+      },
+      {
+        "path": "/login.php",
+        "methods": [
+          "POST"
+        ],
+        "section": "MOTP login endpoint",
+        "description": "",
+        "params": [
+          "username",
+          "password",
+          "otp1",
+          "otp2",
+          "otp3"
+        ]
+      }
+    ],
+    "parameters": [
+      {
+        "name": "username",
+        "type": "text",
+        "method": "POST",
+        "endpoint": "/login.php",
+        "description": ""
+      },
+      {
+        "name": "password",
+        "type": "password",
+        "method": "POST",
+        "endpoint": "/login.php",
+        "description": ""
+      },
+      {
+        "name": "otp1",
+        "type": "text",
+        "method": "POST",
+        "endpoint": "/login.php",
+        "description": ""
+      },
+      {
+        "name": "otp2",
+        "type": "text",
+        "method": "POST",
+        "endpoint": "/login.php",
+        "description": ""
+      },
+      {
+        "name": "otp3",
+        "type": "text",
+        "method": "POST",
+        "endpoint": "/login.php",
+        "description": ""
+      }
+    ],
+    "headers": {},
+    "known_tech_stack": {
+      "web_framework": "",
+      "web_server": "Apache 2.4",
+      "programming_language": "PHP 8.1.12",
+      "database": ""
+    }
+  },
+  "config": {
+    "risk_level": 2
+  },
+  "preloaded_ptg": null,
+  "created_at": "2026-05-12T09:00:22.365247+00:00",
+  "started_at": "2026-05-12T09:00:24.496209+00:00",
+  "completed_at": "2026-05-12T09:00:24.501556+00:00",
+  "worker_id": "0eb422d04118",
+  "error": "AttributeError: type object 'ScanTarget' has no attribute 'from_sitemap_data'\nTraceback (most recent call last):\n  File \"/app/worker.py\", line 291, in main\n    result = _execute_scan(job, cancel_event)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/app/worker.py\", line 225, in _execute_scan\n    target = _build_scan_target(job)\n             ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/app/worker.py\", line 173, in _build_scan_target\n    target = ScanTarget.from_sitemap_data(graph_digest)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: type object 'ScanTarget' has no attribute 'from_sitemap_data'\n"
+}

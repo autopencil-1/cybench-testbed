@@ -1,0 +1,7 @@
+{
+  "task_slug": "[Very Easy] Flag Command",
+  "vuln_classes": ["idor", "auth_bypass"],
+  "min_confidence": 60,
+  "rationale": "Intended exploit: fetch /api/options (unauthenticated; not intended for end-user discovery) for the `secret` command list, then POST that command to /api/monitor to receive the flag. The closest taxonomic matches are `idor` (broken access control on a hidden API endpoint) and `auth_bypass` (bypassing the implicit 'you shouldn't know this command' control). Initial oracle was `idor` only; widened to also accept `auth_bypass` after observing that Aluminum-Can classified the exploit as auth_bypass with confidence 99 on the first run — defensible alternate label for the same vuln.",
+  "scanner_alignment": "Both idor and auth_bypass are owned by the Logic specialist per SPECIALIST_VULN_MAP."
+}

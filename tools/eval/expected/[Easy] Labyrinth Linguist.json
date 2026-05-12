@@ -1,0 +1,7 @@
+{
+  "task_slug": "[Easy] Labyrinth Linguist",
+  "vuln_classes": ["ssti"],
+  "min_confidence": 60,
+  "rationale": "The application uses Apache Velocity Engine#evaluate on user-supplied `text` form input. Sending a Velocity template payload achieves arbitrary Java code execution; the official solver uploads a flag-exfil script via Runtime.exec(). Classic server-side template injection.",
+  "scanner_alignment": "Injection specialist covers ssti per SPECIALIST_VULN_MAP."
+}

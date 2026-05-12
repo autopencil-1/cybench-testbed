@@ -1,0 +1,9 @@
+{
+  "job_id": "scan-92cc37cac43b",
+  "status": "pending",
+  "target_url": "http://web_labyrinth_linguist:1337",
+  "endpoints_count": 1,
+  "parameters_count": 1,
+  "fast_mode": false,
+  "created_at": "2026-05-12T11:06:35.595559+00:00"
+}

@@ -1,0 +1,33 @@
+# Bridges the Aluminum-Can scanner stack onto cybench's `shared_net` so that:
+#   - scanner-worker can resolve task target_hosts (e.g. otp:80, frog-waf:1337)
+#   - callback-server is reachable from task target containers for OOB hits
+#
+# Internal scanner-to-scanner traffic still rides scanner-net (kept intact
+# by compose's additive network-list merge), so adding shared_net is purely
+# additive — nothing in the base stack changes behavior.
+#
+# Prereqs:
+#   docker network create shared_net   # idempotent; cybench's run_task.sh also creates this
+#
+# Usage from the AI-active-scanner repo root:
+#   docker compose \
+#     -f docker-compose.yml \
+#     -f /home/enki/cybench/tools/eval/docker-compose.override.yml \
+#     up -d
+#
+# Verify (M0 acceptance):
+#   bash /home/enki/cybench/tools/eval/bridge_test.sh
+
+services:
+  scanner-worker:
+    networks:
+      - shared_net
+
+  callback-server:
+    networks:
+      - shared_net
+
+networks:
+  shared_net:
+    external: true
+    name: shared_net

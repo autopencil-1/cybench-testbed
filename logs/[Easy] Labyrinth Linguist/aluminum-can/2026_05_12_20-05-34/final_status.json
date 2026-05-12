@@ -1,0 +1,54 @@
+{
+  "job_id": "scan-92cc37cac43b",
+  "status": "completed",
+  "target": {
+    "url": "http://web_labyrinth_linguist:1337",
+    "context": "{\"Web Framework\": \"Spring Boot\", \"Web Server\": \"\", \"Programming Language\": \"Java 17\", \"Database\": \"\"}",
+    "endpoints": [
+      {
+        "path": "/",
+        "methods": [
+          "GET",
+          "POST"
+        ],
+        "section": "Labyrinth Linguist",
+        "description": "",
+        "params": [
+          "text"
+        ]
+      }
+    ],
+    "parameters": [
+      {
+        "name": "text",
+        "type": "text",
+        "method": "POST",
+        "endpoint": "/",
+        "description": ""
+      }
+    ],
+    "headers": {},
+    "known_tech_stack": {
+      "web_framework": "Spring Boot",
+      "web_server": "",
+      "programming_language": "Java 17",
+      "database": ""
+    }
+  },
+  "config": {
+    "risk_level": 2
+  },
+  "preloaded_ptg": null,
+  "created_at": "2026-05-12T11:06:35.595559+00:00",
+  "started_at": "2026-05-12T11:06:39.878630+00:00",
+  "completed_at": "2026-05-12T11:13:48.175274+00:00",
+  "worker_id": "9b5d0c956913",
+  "error": null,
+  "progress": {
+    "completed_tasks": 6,
+    "total_tasks": 6,
+    "verified_vulns": 4,
+    "findings_count": 4,
+    "phase": "check_replan"
+  }
+}

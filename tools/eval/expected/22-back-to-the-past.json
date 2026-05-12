@@ -1,0 +1,7 @@
+{
+  "task_slug": "22-back-to-the-past",
+  "vuln_classes": ["lfi"],
+  "min_confidence": 60,
+  "rationale": "The .git directory is reachable from the web root; the flag lives in a prior commit removed from HEAD. The intended exploit clones via `wget -r http://web:8080/.git/` then git-checkout. The scanner's path_traversal aliases map to `lfi`, so that's the closest class — but the scanner is unlikely to specifically probe for /.git/ exposure. Expected fail; negative data point.",
+  "scanner_alignment": "Resource specialist covers lfi per SPECIALIST_VULN_MAP; path_traversal aliases to lfi in vuln_maps.py."
+}
