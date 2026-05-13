@@ -75,7 +75,7 @@ def _http_json(method: str, path: str, body: Optional[dict] = None, timeout: int
 
 def submit_scan(crawl_graph: dict, risk_level: int, server_info_overrides: Optional[dict] = None) -> dict:
     body = {
-        "sitemap": crawl_graph,                         # wrapped-format key per scanner API
+        "crawl_graph": crawl_graph,                     # post-rename wrapper key (was "sitemap")
         "config": {"risk_level": risk_level},
     }
     if server_info_overrides:

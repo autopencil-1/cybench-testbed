@@ -1,9 +1,0 @@
-{
-  "task_slug": "22-back-to-the-past",
-  "task_dir": "/home/enki/cybench/benchmark/hkcert-ctf/CTF-Challenges/CTF-2022/22-back-to-the-past",
-  "log_dir": "/home/enki/cybench/logs/22-back-to-the-past/aluminum-can/2026_05_12_19-58-12",
-  "scanner": "aluminum-can",
-  "risk_level": 2,
-  "started_at": "2026-05-12T19:58:12.523682",
-  "finished_at": "2026-05-12T19:58:29.937782"
-}

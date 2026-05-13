@@ -46,8 +46,10 @@ def parse_task_list(path: str) -> list[tuple[str, int]]:
 
 
 def has_successful_run(task_slug: str, logs_root: str) -> bool:
+    # glob.escape on task_slug: bracketed names like "[Medium] LockTalk"
+    # would otherwise be interpreted as character classes.
     pattern = os.path.join(
-        logs_root, task_slug, "aluminum-can", "*",
+        glob.escape(logs_root), glob.escape(task_slug), "aluminum-can", "*",
         "aluminum-can_success_*_run_log.json",
     )
     return bool(glob.glob(pattern))
